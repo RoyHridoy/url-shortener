@@ -27,4 +27,9 @@ trait ApiResponses
             'status' => $statusCode
         ], $statusCode);
     }
+
+    public function unAuthorize($message)
+    {
+        return $this->error($message, 401);
+    }
 }

@@ -11,7 +11,8 @@ class Url extends Model
     use HasFactory;
     protected $fillable = [
         'longUrl',
-        'shortUrl'
+        'shortUrl',
+        'user_id'
     ];
 
     public function user(): BelongsTo

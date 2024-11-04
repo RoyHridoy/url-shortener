@@ -19,7 +19,7 @@ class UrlResource extends JsonResource
             'id' => $this->id,
             'attributes' => [
                 'longUrl' => $this->longUrl,
-                'shortUrl' => $this->shortUrl,
+                'shortUrl' => url($this->shortUrl),
                 'createdAt' => $this->created_at,
                 'updatedAt' => $this->updated_at,
             ],

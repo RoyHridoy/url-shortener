@@ -18,7 +18,7 @@ class UrlController extends ApiController
     public function index()
     {
         return UrlResource::collection(
-            Url::where('user_id', auth()->id())->paginate()
+            Url::where('user_id', auth()->id())->latest()->paginate()
         );
     }
 

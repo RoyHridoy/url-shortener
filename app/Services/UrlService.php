@@ -38,7 +38,10 @@ class UrlService
     private function isUrlExists(string $url, string $urlType): bool|Model
     {
         try {
-            $url = Url::where($urlType, $url)->firstOrFail();
+            $url = Url::when($urlType === 'longUrl', function ($query) {
+                return $query->where('user_id', auth()->id());
+            })->where($urlType, $url)->firstOrFail();
+
             return $url;
         } catch (ModelNotFoundException $exception) {
             return false;

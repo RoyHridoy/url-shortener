@@ -39,15 +39,22 @@ class UrlController extends ApiController
         return $this->unAuthorize('You are not authorized to see this resource.');
     }
 
-    // TODO: Not Complete Yet.
-    // 1. When creating user check customize = 1 and longUrl exist or not in list
-    // 2. Bottom Todo
     public function update(UpdateUrlRequest $request, Url $url)
     {
         if ($this->isAble('update', $url)) {
             if ($url->users->pluck('id')->count() > 1) {
-                // TODO:
-                return "need to Create";
+
+                $url->users()->detach(auth()->id());
+                $newUrl = $url->create([
+                    'longUrl' => $url->longUrl,
+                    'shortUrl' => $request->mappedAttributes()['shortUrl'],
+                    'visitorCount' => $url->visitorCount,
+                    'isCustomized' => 1
+                ]);
+                $newUrl->users()->attach(auth()->id());
+
+                return new UrlResource($newUrl);
+
             } else {
                 $url->update([
                     'shortUrl' => $request->mappedAttributes()['shortUrl'],
@@ -72,5 +79,4 @@ class UrlController extends ApiController
         }
         return $this->unAuthorize('You are not authorized to delete the url resource.');
     }
-
 }

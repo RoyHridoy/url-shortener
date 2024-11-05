@@ -42,8 +42,17 @@ class UrlService
     {
         try {
             $url = Url::when($urlType === 'longUrl', function ($query) {
-                return $query->where('isCustomized', 0);
-            })->where($urlType, $url)->firstOrFail();
+                $query->where(function ($query) {
+                    $query->where('isCustomized', 0)
+                        ->orWhere(function ($query) {
+                            $query->where('isCustomized', 1)
+                                ->whereHas('users', function ($query) {
+                                    $query->where('user_id', auth()->id());
+                                });
+                        });
+                });
+            })->where($urlType, $url)->latest()->firstOrFail();
+
             return $url;
         } catch (ModelNotFoundException $exception) {
             return false;

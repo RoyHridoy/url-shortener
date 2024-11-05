@@ -25,6 +25,14 @@ class UrlPolicy
     }
 
     /**
+     * Determine whether the user can update the url.
+     */
+    public function update(User $user, Url $url): bool
+    {
+        return $user->tokenCan(Abilities::UPDATE_OWN_URL) && $url->users->contains($user);
+    }
+
+    /**
      * Determine whether the user can delete the url.
      */
     public function delete(User $user, Url $url): bool

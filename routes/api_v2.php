@@ -13,8 +13,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', UserProfileController::class)->name('profile');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::apiResource('urls', UrlController::class)->except('update');
+    Route::apiResource('urls', UrlControllerV2::class)->except('update');
 
     // V2.0 Customize Url
-    Route::patch('urls/{url}', [UrlControllerV2::class, 'update'])->name('urls.update');
+    // Route::patch('urls/{url}', [UrlControllerV2::class, 'update'])->name('urls.update');
 });

@@ -9,6 +9,9 @@ class RedirectController extends Controller
 {
     public function __invoke(Url $url)
     {
+        $url->update([
+            'visitorCount' => ++$url->visitorCount
+        ]);
         return redirect($url->longUrl);
     }
 }

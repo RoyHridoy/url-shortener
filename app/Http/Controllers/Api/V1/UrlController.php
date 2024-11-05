@@ -8,7 +8,6 @@ use App\Models\Url;
 use App\Policies\V1\UrlPolicy;
 use App\Services\UrlService;
 use App\Traits\ApiResponses;
-use Illuminate\Http\Request;
 
 class UrlController extends ApiController
 {
@@ -23,19 +22,12 @@ class UrlController extends ApiController
         );
     }
 
-    /* TODO:
-        1. Check Ability to Create a short Url
-        2. Refactor Service Class code
-        3. Customize an url
-        4. Delete an url
-        5. Implement Version 2
-        6. Limit a user can create maximum 15 url
-        7. Handle Exception
-        8. Documentation
-    */
     public function store(StoreUrlRequest $request)
     {
-        return new UrlResource((new UrlService())->firstOrCreate($request));
+        if ($this->isAble('create', new Url())) {
+            return new UrlResource((new UrlService())->firstOrCreate($request));
+        }
+        return $this->unAuthorize('You are not authorize to create url resource.');
     }
 
     public function show(Url $url)
@@ -44,5 +36,14 @@ class UrlController extends ApiController
             return new UrlResource($url);
         }
         return $this->unAuthorize('You are not authorize to see this resource.');
+    }
+
+    public function destroy(Url $url)
+    {
+        if ($this->isAble('delete', $url)) {
+            $url->delete();
+            return $this->ok('Successfully Deleted the shorten url');
+        }
+        return $this->unAuthorize('You are not authorize to delete the url resource.');
     }
 }

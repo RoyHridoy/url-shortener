@@ -2,6 +2,7 @@
 
 namespace App\Policies\V1;
 
+use App\Abilities\V1\Abilities;
 use App\Models\Url;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -16,27 +17,27 @@ class UrlPolicy
         return $url->user()->is($user);
     }
 
-    // /**
-    //  * Determine whether the user can create models.
-    //  */
-    // public function create(User $user): bool
-    // {
-    //     //
-    // }
+    /**
+     * Determine whether the user can create an url.
+     */
+    public function create(User $user): bool
+    {
+        return $user->tokenCan(Abilities::CREATE_URL);
+    }
 
-    // /**
-    //  * Determine whether the user can update the model.
-    //  */
-    // public function update(User $user, Url $url): bool
-    // {
-    //     //
-    // }
+    /**
+     * Determine whether the user can update the url.
+     */
+    public function update(User $user, Url $url): bool
+    {
+        return $user->tokenCan(Abilities::UPDATE_OWN_URL) && $url->user_id === $user->id;
+    }
 
-    // /**
-    //  * Determine whether the user can delete the model.
-    //  */
-    // public function delete(User $user, Url $url): bool
-    // {
-    //     //
-    // }
+    /**
+     * Determine whether the user can delete the url.
+     */
+    public function delete(User $user, Url $url): bool
+    {
+        return $user->tokenCan(Abilities::DELETE_OWN_URL) && $url->user_id === $user->id;
+    }
 }

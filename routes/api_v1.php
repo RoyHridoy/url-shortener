@@ -12,5 +12,5 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', UserProfileController::class)->name('profile');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::apiResource('urls', UrlController::class);
+    Route::apiResource('urls', UrlController::class)->except('update');
 });

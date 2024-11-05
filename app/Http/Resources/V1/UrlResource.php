@@ -24,10 +24,10 @@ class UrlResource extends JsonResource
                 'updatedAt' => $this->updated_at,
             ],
             'relationships' => [
-                'user' => [
+                'users' => [
                     'data' => [
                         'type' => 'user',
-                        'id' => $this->user_id
+                        'id' => $this->users->pluck('id')
                     ]
                 ]
             ],

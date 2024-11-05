@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -50,8 +50,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function urls(): HasMany
+    public function urls(): BelongsToMany
     {
-        return $this->hasMany(Url::class);
+        return $this->belongsToMany(Url::class)->withTimestamps();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\V1;
 
 use App\Http\Requests\Api\V1\StoreUrlRequest;
 use App\Models\Url;
@@ -15,13 +15,16 @@ class UrlService
         $url = $this->isUrlExists($requestedData['longUrl'], 'longUrl');
 
         if ($url) {
+            $url->users()->syncWithoutDetaching(auth()->id());
             return $url;
         }
 
-        return Url::create(array_merge(
+        $url = Url::create(array_merge(
             $requestedData,
             ['shortUrl' => $this->generateShortUrl()]
         ));
+        $url->users()->attach(auth()->id());
+        return $url;
     }
 
     private function generateShortUrl()
@@ -39,9 +42,8 @@ class UrlService
     {
         try {
             $url = Url::when($urlType === 'longUrl', function ($query) {
-                return $query->where('user_id', auth()->id());
+                return $query->where('isCustomized', 0);
             })->where($urlType, $url)->firstOrFail();
-
             return $url;
         } catch (ModelNotFoundException $exception) {
             return false;

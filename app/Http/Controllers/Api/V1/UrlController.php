@@ -6,7 +6,7 @@ use App\Http\Requests\Api\V1\StoreUrlRequest;
 use App\Http\Resources\V1\UrlResource;
 use App\Models\Url;
 use App\Policies\V1\UrlPolicy;
-use App\Services\UrlService;
+use App\Services\V1\UrlService;
 use App\Traits\ApiResponses;
 
 class UrlController extends ApiController
@@ -18,7 +18,7 @@ class UrlController extends ApiController
     public function index()
     {
         return UrlResource::collection(
-            Url::where('user_id', auth()->id())->latest()->paginate()
+            auth()->user()->urls()->latest()->paginate()
         );
     }
 
@@ -27,7 +27,7 @@ class UrlController extends ApiController
         if ($this->isAble('create', new Url())) {
             return new UrlResource((new UrlService())->firstOrCreate($request));
         }
-        return $this->unAuthorize('You are not authorize to create url resource.');
+        return $this->unAuthorize('You are not authorized to create url resource.');
     }
 
     public function show(Url $url)
@@ -35,15 +35,19 @@ class UrlController extends ApiController
         if ($this->isAble('view', $url)) {
             return new UrlResource($url);
         }
-        return $this->unAuthorize('You are not authorize to see this resource.');
+        return $this->unAuthorize('You are not authorized to see this resource.');
     }
 
     public function destroy(Url $url)
     {
         if ($this->isAble('delete', $url)) {
-            $url->delete();
+            if ($url->users->pluck('id')->count() > 1) {
+                $url->users()->detach(auth()->id());
+            } else {
+                $url->delete();
+            }
             return $this->ok('Successfully Deleted the shorten url');
         }
-        return $this->unAuthorize('You are not authorize to delete the url resource.');
+        return $this->unAuthorize('You are not authorized to delete the url resource.');
     }
 }

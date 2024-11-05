@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +10,11 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('urls', function (Blueprint $table) {
+        Schema::create('url_user', function (Blueprint $table) {
             $table->id();
-            $table->string('longUrl');
-            $table->string('shortUrl')->unique();
-            $table->boolean('isCustomized')->default(0);
-            $table->integer('visitorCount')->default(0);
+            $table->foreignId('url_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->unique(['url_id', 'user_id']);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('urls');
+        Schema::dropIfExists('url_user');
     }
 };

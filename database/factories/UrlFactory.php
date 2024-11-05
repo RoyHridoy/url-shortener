@@ -18,7 +18,6 @@ class UrlFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
             'longUrl' => fake()->url(),
             'shortUrl' => fake()->unique()->regexify('[A-Z]{5}[0-9]{3}')
         ];

@@ -55,7 +55,7 @@ return Application::configure(basePath: dirname(__DIR__))
             $index = strrpos($className, '\\');
             return response()->json([
                 'errors' => [
-                    'type' => substr($className, $index + 1),
+                    'type' => substr($className, $index),
                     'status' => 0,
                     'message' => $exception->getMessage()
                 ]

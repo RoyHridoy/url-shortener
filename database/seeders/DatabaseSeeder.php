@@ -14,10 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::factory(10)->create();
-
-        Url::factory(100)
-            ->recycle($users)
+        user::factory()
+            ->has(Url::factory(5))
+            ->count(10)
             ->create();
     }
 }

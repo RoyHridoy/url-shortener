@@ -15,10 +15,11 @@ class UrlController extends ApiController
     {
         if ($this->isAble('update', $url)) {
             $url->update([
-                'shortUrl' => $request->mappedAttributes()['shortUrl']
+                'shortUrl' => $request->mappedAttributes()['shortUrl'],
+                'isCustomized' => 1
             ]);
             return new UrlResource($url);
         }
-        return $this->unAuthorize('You are not authorize to update the url resource.');
+        return $this->unAuthorize('You are not authorized to update the url resource.');
     }
 }

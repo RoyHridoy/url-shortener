@@ -123,5 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'url_creation_max_limit' => env('USER_MAX_URL_LIMIT', 15)
+    'url_creation_max_limit' => env('URL_CREATION_LIMIT', 15)
 ];

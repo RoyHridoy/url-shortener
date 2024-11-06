@@ -1,66 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# URL Shortener API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a URL Shortener API built using Laravel, featuring user registration, login via Sanctum, URL shortening, and more. The API supports two versions (v1 and v2), each adding enhancements and new features.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Version 1 (v1)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **User Registration**: Users can register an account.
+- **User Login**: Users can log in to retrieve an API key (via Sanctum) to access protected endpoints.
+- **URL Shortening**: Users can submit a long URL to get a shortened one.
+  - If the same long URL is submitted multiple times, the same shortened URL will be returned.
+- **Unique Short URLs**: All shortened URLs are unique to avoid collisions.
+- **URL List**: Users can retrieve a list of all URLs they have shortened.
+- **URL Redirection**: A simple web route allows shortened URLs to redirect to their original URLs when accessed via the browser.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Version 2 (v2)
 
-## Learning Laravel
+- **Visit Count**: Keeps track of how many times each shortened URL has been visited.
+- **Custom Short URLs**: Users can customize their shortened URLs.
+- **URL Creation Limit**: Users are limited to creating a maximum of 15 shortened URLs by default (configurable via `.env`).
+- All features from **v1** are retained.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## API Endpoints
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### v1 Endpoints
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Method | URI                          | Description                                 |
+|--------|------------------------------|---------------------------------------------|
+| POST   | `/api/v1/register`            | Register a new user                        |
+| POST   | `/api/v1/login`               | Log in to get an API key                   |
+| POST   | `/api/v1/logout`              | Log out                                    |
+| GET    | `/api/v1/profile`             | Get user profile information               |
+| GET    | `/api/v1/urls`                | Get the list of shortened URLs             |
+| POST   | `/api/v1/urls`                | Shorten a new URL                          |
+| GET    | `/api/v1/urls/{url}`          | Retrieve details of a shortened URL        |
+| DELETE | `/api/v1/urls/{url}`          | Delete a shortened URL                     |
+| GET    | `/{url}`                      | Redirect shortened URL to the original URL |
 
-## Laravel Sponsors
+### v2 Endpoints
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Method  | URI                          | Description                                 |
+|---------|------------------------------|---------------------------------------------|
+| POST    | `/api/v2/register`            | Register a new user                        |
+| POST    | `/api/v2/login`               | Log in to get an API key                   |
+| POST    | `/api/v2/logout`              | Log out                                    |
+| GET     | `/api/v2/profile`             | Get user profile information               |
+| GET     | `/api/v2/urls`                | Get the list of shortened URLs with visit counts |
+| POST    | `/api/v2/urls`                | Shorten a new URL                           |
+| GET     | `/api/v2/urls/{url}`          | Retrieve details of a shortened URL with visit counts |
+| DELETE  | `/api/v2/urls/{url}`          | Delete a shortened URL                     |
+| PUT   | `/api/v2/urls/{url}`            | Update a shortened URL (e.g., customize it)|
+| GET     | `/{url}`                      | Redirect shortened URL to the original URL |
 
-### Premium Partners
+## Configuration
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### .env File
 
-## Contributing
+- **URL Creation Limit**: The default URL creation limit per user is `15`. You can adjust this by setting the following in your `.env` file:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+  ```env
+  URL_CREATION_LIMIT=15
+## Getting Started
 
-## Code of Conduct
+### Prerequisites
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP 8.1+
+- Laravel 11
+- Composer
+- MySQL or SQLITE or another supported database
 
-## Security Vulnerabilities
+### Installation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Clone the repository**:
 
+   ```bash
+   git clone https://github.com/RoyHridoy/url-shortener.git
+   cd url-shortener
+2. **Install dependencies**:
+
+   ```bash
+   composer install
+3. **Set up the .env file**:
+
+   ```bash
+    cp .env.example .env
+    php artisan key:generate
+4. **Set up the database credentials in the .env file and run migrations**:
+   ```bash
+    php artisan migrate
+5. **Serve the application:**:
+   ```bash
+    php artisan serve
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT License](https://opensource.org/licenses/MIT).

@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V2\UpdateUrlRequest;
 use App\Http\Resources\V2\UrlResource;
 use App\Models\Url;
 use App\Services\V1\UrlService;
+use App\Services\V2\UrlService as UrlServiceV2;
 use App\Traits\ApiResponses;
 
 class UrlController extends ApiController
@@ -25,10 +26,10 @@ class UrlController extends ApiController
 
     public function store(StoreUrlRequest $request)
     {
-        if ($this->isAble('create', new Url())) {
+        if ($this->isAble('createV2', new Url())) {
             return new UrlResource((new UrlService())->firstOrCreate($request));
         }
-        return $this->unAuthorize('You are not authorized to create url resource.');
+        return $this->unAuthorize('Limit exceed! You can create maximum ' . config('app.url_creation_max_limit') . ' shorten url.');
     }
 
     public function show(Url $url)
@@ -42,26 +43,7 @@ class UrlController extends ApiController
     public function update(UpdateUrlRequest $request, Url $url)
     {
         if ($this->isAble('update', $url)) {
-            if ($url->users->pluck('id')->count() > 1) {
-
-                $url->users()->detach(auth()->id());
-                $newUrl = $url->create([
-                    'longUrl' => $url->longUrl,
-                    'shortUrl' => $request->mappedAttributes()['shortUrl'],
-                    'visitorCount' => $url->visitorCount,
-                    'isCustomized' => 1
-                ]);
-                $newUrl->users()->attach(auth()->id());
-
-                return new UrlResource($newUrl);
-
-            } else {
-                $url->update([
-                    'shortUrl' => $request->mappedAttributes()['shortUrl'],
-                    'isCustomized' => 1
-                ]);
-            }
-            return new UrlResource($url);
+            return new UrlResource((new UrlServiceV2())->updateOrCreate($request, $url));
         }
         return $this->unAuthorize('You are not authorized to update the url resource.');
     }

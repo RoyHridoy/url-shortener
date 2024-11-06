@@ -25,6 +25,14 @@ class UrlPolicy
     }
 
     /**
+     * Determine whether the user can create an url for Version 2.
+     */
+    public function createV2(User $user): bool
+    {
+        return $user->tokenCan(Abilities::CREATE_URL) && $user->urls()->count() < config('app.url_creation_max_limit');
+    }
+
+    /**
      * Determine whether the user can update the url.
      */
     public function update(User $user, Url $url): bool

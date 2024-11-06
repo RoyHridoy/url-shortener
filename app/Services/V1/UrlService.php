@@ -51,7 +51,7 @@ class UrlService
                                 });
                         });
                 });
-            })->where($urlType, $url)->latest()->firstOrFail();
+            })->where($urlType, $url)->orderByDesc('isCustomized')->firstOrFail();
 
             return $url;
         } catch (ModelNotFoundException $exception) {

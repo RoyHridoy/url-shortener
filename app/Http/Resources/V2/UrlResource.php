@@ -20,7 +20,7 @@ class UrlResource extends JsonResource
             'attributes' => [
                 'longUrl' => $this->longUrl,
                 'shortUrl' => url($this->shortUrl),
-                'totalVisit' => $this->visitorCount,
+                'totalVisit' => $this->visitorCount ?? 0,
                 'createdAt' => $this->created_at,
                 'updatedAt' => $this->updated_at,
             ],

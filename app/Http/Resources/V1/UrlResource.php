@@ -27,6 +27,7 @@ class UrlResource extends JsonResource
                 'users' => [
                     'data' => [
                         'type' => 'user',
+                        /** @var array */
                         'id' => $this->users->pluck('id')
                     ]
                 ]

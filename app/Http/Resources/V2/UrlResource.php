@@ -20,6 +20,7 @@ class UrlResource extends JsonResource
             'attributes' => [
                 'longUrl' => $this->longUrl,
                 'shortUrl' => url($this->shortUrl),
+                /** @var integer */
                 'totalVisit' => $this->visitorCount ?? 0,
                 'createdAt' => $this->created_at,
                 'updatedAt' => $this->updated_at,
@@ -28,6 +29,7 @@ class UrlResource extends JsonResource
                 'users' => [
                     'data' => [
                         'type' => 'user',
+                        /** @var array */
                         'id' => $this->users->pluck('id')
                     ]
                 ]

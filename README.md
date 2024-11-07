@@ -36,6 +36,7 @@ This is a URL Shortener API built using Laravel, featuring user registration, lo
 | GET    | `/api/v1/urls/{url}`          | Retrieve details of a shortened URL        |
 | DELETE | `/api/v1/urls/{url}`          | Delete a shortened URL                     |
 | GET    | `/{url}`                      | Redirect shortened URL to the original URL |
+### **See Details On**: [V1 Documentation](https://shortenurl.royhridoy.me/public/docs/v1)
 
 ### v2 Endpoints
 
@@ -52,6 +53,7 @@ This is a URL Shortener API built using Laravel, featuring user registration, lo
 | PUT   | `/api/v2/urls/{url}`            | Update a shortened URL (e.g., customize it)|
 | GET     | `/{url}`                      | Redirect shortened URL to the original URL |
 
+### **See Details On**: [V2 Documentation](https://shortenurl.royhridoy.me/public/docs/v2)
 ## Configuration
 
 ### .env File
@@ -60,64 +62,8 @@ This is a URL Shortener API built using Laravel, featuring user registration, lo
 
   ```env
   URL_CREATION_LIMIT=15
-## Request and Response Sample
-
-## URL Creation
-
-### Request Payload
-
-To create a new shortened URL, send a `POST` request to `/api/v2/urls` with the following payload:
-
-```json
-{
-    "data": {
-        "attributes": {
-            "longUrl": "https://github.com/RoyHridoy/url-shortener"
-        },
-        "relationships": {
-            "user": {
-                "data": {
-                    "id": 3
-                }
-            }
-        }
-    }
-}
-```
-### Response Example
-Upon successful creation, the API returns the following response:
-```json
-{
-    "data": {
-        "type": "url",
-        "id": 16,
-        "attributes": {
-            "longUrl": "https://github.com/RoyHridoy/url-shortener",
-            "shortUrl": "http://127.0.0.1:8000/4tq5UK",
-            "totalVisit": 0,
-            "createdAt": "2024-11-06T08:06:28.000000Z",
-            "updatedAt": "2024-11-06T08:06:28.000000Z"
-        },
-        "relationships": {
-            "users": {
-                "data": {
-                    "type": "user",
-                    "id": [
-                        3
-                    ]
-                }
-            }
-        },
-        "links": {
-            "self": [
-                "http://127.0.0.1:8000/api/v2/urls/16"
-            ]
-        }
-    }
-}
-```
-# ⚠️ **Details API Documentation Coming Soon...**
-> Stay tuned for a complete and detailed guide on all API features and usage.
+<!-- # ⚠️ **Details API Documentation Coming Soon...**
+> Stay tuned for a complete and detailed guide on all API features and usage. -->
 ## Getting Started
 
 ### Prerequisites
